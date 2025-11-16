@@ -1,0 +1,126 @@
+public class CityBank {
+    public static void main(String[] args) {
+
+        Scanner input = new Scanner(System.in);
+        BankActions account = null; // Polymorphism 
+        int choice;
+
+        System.out.println("=====================================================");
+        System.out.println("             Welcome to CityBank System              ");
+        System.out.println("             Your safety, Our priority~\n");
+
+        do {
+            System.out.println("Please select your occasion today.");
+            System.out.println(" 1 -> Create Account ");
+            System.out.println(" 2 -> Deposit Funds ");
+            System.out.println(" 3 -> Withdraw Funds ");
+            System.out.println(" 4 -> Check Balance ");
+            System.out.println(" 5 -> Exit ");
+            System.out.print("Enter your choice: ");
+
+            while (!input.hasNextInt()) {
+                System.out.println("Invalid input! Enter a number 1–5.");
+                input.next();
+            }
+
+            choice = input.nextInt();
+            System.out.println();
+
+            switch (choice) {
+
+                // create the account
+                case 1:
+                    System.out.println("Select Account Type:");
+                    System.out.println(" 1 -> Saving Account");
+                    System.out.println(" 2 -> Current Account");
+                    System.out.print("Enter: ");
+
+                    int type = input.nextInt();
+                    input.nextLine();
+
+                    System.out.print("Enter Account Number: ");
+                    double num = input.nextDouble();
+                    input.nextLine();
+
+                    System.out.print("Enter Account Holder Name: ");
+                    String name = input.nextLine();
+
+                    System.out.print("Enter Initial Balance (RM): ");
+                    double bal = input.nextDouble();
+
+                    if (type == 1) {
+                        account = new SavingAcc(num, name, bal);
+                        System.out.println("Savings Account Created Successfully!");
+                    } 
+                    else if (type == 2) {
+                        account = new CurrentAcc(num, name, bal);
+                        System.out.println("Current Account Created Successfully!");
+                    } 
+                    else {
+                        System.out.println("Invalid account type is selected.Choose 1-2 only.");
+                    }
+                    break;
+
+                // deposit
+                case 2:
+                    if (account == null) {
+                        System.out.println("No acount found. Please create one first.");
+                        break;
+                    }
+
+                    System.out.print("Enter deposit amount: RM ");
+                    double dep = input.nextDouble();
+
+                    if (dep <= 0) {
+                        System.out.println("Deposit amount must be more than RM0.");
+                    } else {
+                        account.deposit(dep);
+                        System.out.println("Deposit successful!");
+                        account.display_bal();
+                    }
+                    break;
+
+                // withdrawal
+                case 3:
+                    if (account == null) {
+                        System.out.println("No account found. Please create one first.");
+                        break;
+                    }
+
+                    System.out.print("Enter withdrawal amount: RM ");
+                    double wd = input.nextDouble();
+
+                    if (wd <= 0) {
+                        System.out.println("Withdrawal amount must be more than RM0.");
+                    } else {
+                        account.withdraw(wd);
+                        System.out.println("Transaction completed.");
+                        account.display_bal();
+                    }
+                    break;
+
+                // balance
+                case 4:
+                    if (account == null) {
+                        System.out.println("No account found. Please create one first.");
+                    } else {
+                        account.display_bal();
+                    }
+                    break;
+
+                // exit
+                case 5:
+                    System.out.println("=====================================================");
+                    System.out.println(" Thank you! -- Strong. Secure. CityBank awaits you.        ");
+                    System.out.println("=====================================================");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice. Please choose 1–5.");
+            }
+
+        } while (choice != 5);
+
+        input.close();
+    }
+}
